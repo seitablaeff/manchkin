@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manchkin Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sortablejs/1.15.0/Sortable.min.js"></script>
+</head>
+<body>
+    <div id="game" class="hidden">
+        <div id="cardDisplay" class="hidden">
+            <img id="cardImage" src="" alt="Card">
+            <button id="closeCard">Close</button>
+            <button id="onHand">Рука</button>
+            <button id="onTable">Стол</button>
+            <button id="onMyCards">Мои Карты</button>
+        </div>
+
+        <div id="gameArea">
+            <div id="users">
+                <h2>Пользователи</h2>
+                <div id="userList">
+                    <!-- Список пользователей -->
+                </div>
+            </div>
+
+            <div id="gameField">
+                <div class="deck-of-cards">
+                    <img src="assets/Двери/обложка_двери.jpg" id="doors-deck" alt="Doors Deck">
+                    <img src="assets/Сокровища/обложка_сокровища.jpg" id="treasures-deck" alt="Treasures Deck">
+                </div>
+
+                <!-- Здесь будет поле для механики боя, если нужно -->
+            </div>
+        </div>
+
+        <div id="playerCards">
+            <div id="table" class="sortable-container">
+                <h2>Карты на столе</h2>
+                <!-- Карты на столе -->
+            </div>
+
+            <div id="hand" class="sortable-container">
+                <h2>Карты на руке</h2>
+                <!-- Карты на руке -->
+            </div>
+
+            <div id="chat">
+                <div id="messages"></div>
+                <form id="chatForm">
+                    <input type="text" id="messageInput" placeholder="Type a message...">
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div id="userIdDisplay">
+            <p>Your ID: <span id="userId">Loading...</span></p>
+            <p>Room Number: <span id="roomNumber">Loading...</span></p>
+        </div>
+    </footer>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Manchkin Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loginForm">
+        <h1>Enter your name and room number</h1>
+        <form id="form">
+            <input type="text" id="username" placeholder="Your Name" required>
+            <input type="text" id="roomNumber" placeholder="Room Number" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
