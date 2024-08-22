@@ -8,52 +8,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sortablejs/1.15.0/Sortable.min.js"></script>
 </head>
 <body>
-    <div id="game" class="hidden">
-        <div id="cardDisplay" class="hidden">
-            <img id="cardImage" src="" alt="Card">
-            <button id="closeCard">Close</button>
-            <button id="onHand">Рука</button>
-            <button id="onTable">Стол</button>
-            <button id="onMyCards">Мои Карты</button>
-        </div>
 
-        <div id="gameArea">
-            <div id="users">
-                <h2>Пользователи</h2>
-                <div id="userList">
-                    <!-- Список пользователей -->
-                </div>
+    <div id="cardDisplay" class="hidden">
+        <img id="cardImage" src="" alt="Card">
+        <button id="closeCard">Close</button>
+        <button id="onHand">На руки</button>
+        <button id="onTable">На стол</button>
+    </div>
+
+    <div id="main">
+        <div id="top-row">
+            <div id="users" class="block">
+                <h3>Пользователи</h3>
+                <div id="userList" class="content"></div>
             </div>
-
-            <div id="gameField">
-                <div class="deck-of-cards">
-                    <img src="assets/Двери/обложка_двери.jpg" id="doors-deck" alt="Doors Deck">
-                    <img src="assets/Сокровища/обложка_сокровища.jpg" id="treasures-deck" alt="Treasures Deck">
-                </div>
-
-                <!-- Здесь будет поле для механики боя, если нужно -->
+            
+        
+        <div id="game" class="block">
+            <h3>Доска игры</h3>
+            <div class="deck-of-cards">
+                <img src="assets/Двери/обложка_двери.jpg" id="doors-deck" alt="Doors Deck">
+                <img src="assets/Сокровища/обложка_сокровища.jpg" id="treasures-deck" alt="Treasures Deck">
             </div>
         </div>
-
-        <div id="playerCards">
-            <div id="table" class="sortable-container">
-                <h2>Карты на столе</h2>
-                <!-- Карты на столе -->
+        </div>
+        
+        <div id="bottom-row">
+            <div id="tableCards" class="block">
+                <h3>Карты на столе</h3>
+                <button class="add-button" onclick="addElement('tableCards')">Добавить карту</button>
+                <div class="content"></div>
             </div>
-
-            <div id="hand" class="sortable-container">
-                <h2>Карты на руке</h2>
-                <!-- Карты на руке -->
-            </div>
-
-            <div id="chat">
-                <div id="messages"></div>
-                <form id="chatForm">
-                    <input type="text" id="messageInput" placeholder="Type a message...">
-                    <button type="submit">Send</button>
-                </form>
+        
+            <div id="handCards" class="block">
+                <h3>Мои показатели и карты</h3>
+                <button class="add-button" onclick="addElement('handCards')">Добавить показатель</button>
+                <div class="content"></div>
             </div>
         </div>
+    </div>
+    
+    <div id="chat" class="block">
+        <h3>Чат</h3>
+        <div id="messages" class="content"></div>
+        <form id="chatForm">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button type="submit">Send</button>
+        </form>
     </div>
 
     <footer>

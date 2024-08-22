@@ -1,10 +1,11 @@
+// game-script.js
 document.addEventListener('DOMContentLoaded', function() {
     var game = document.getElementById('game');
     var userIdDisplay = document.getElementById('userId');
     var roomNumberDisplay = document.getElementById('roomNumber');
+    var userList = document.getElementById('userList');
     var socket = io();
 
-    // Проверка авторизации
     if (!localStorage.getItem('username') || !localStorage.getItem('roomNumber')) {
         window.location.href = 'index.html';
     } else {
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     var roomId = localStorage.getItem('roomNumber');
-    console.log("roomid = ", roomId);
+    var username = JSON.parse(localStorage.getItem('currentUser')).username;
 
     socket.on('connect', () => {
         userIdDisplay.textContent = socket.id;
@@ -20,7 +21,15 @@ document.addEventListener('DOMContentLoaded', function() {
         socket.emit('joinRoom', roomId);
     });
 
-    // Чат
+    socket.on('updateUserList', (users) => {
+        userList.innerHTML = ''; // Очищаем текущий список
+        users.forEach((userId) => {
+            var userElement = document.createElement('div');
+            userElement.textContent = userId; // Вы можете заменить userId на более информативный идентификатор
+            userList.appendChild(userElement);
+        });
+    });
+
     var chatForm = document.getElementById('chatForm');
     var messageInput = document.getElementById('messageInput');
     var messages = document.getElementById('messages');
@@ -124,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         'assets/Сокровища/Шмотки/Штырь Лозоходца.jpg',
         'assets/Сокровища/Шмотки/Яппиток.jpg'
     ];
-
+    
     var doors = [
         // Андед
         'assets/Двери/Андед/Андедный Коник.jpg',
@@ -239,7 +248,6 @@ document.addEventListener('DOMContentLoaded', function() {
     var closeCardButton = document.getElementById('closeCard');
     var onHandButton = document.getElementById('onHand');
     var onTableButton = document.getElementById('onTable');
-    var onMyCardsButton = document.getElementById('onMyCards');
 
     document.getElementById('doors-deck').addEventListener('dblclick', function() {
         displayCard(doors);
@@ -258,25 +266,16 @@ document.addEventListener('DOMContentLoaded', function() {
         newCard.src = cardImage.src;
         newCard.alt = 'Hand Card';
         newCard.setAttribute('data-placement', 'none');
-        hand.appendChild(newCard);
-        cardDisplay.classList.add('hidden');
-    });
-
-    onMyCardsButton.addEventListener('click', function() {
-        var newCard = document.createElement('img');
-        newCard.src = cardImage.src;
-        newCard.alt = 'myCards Card';
-        newCard.setAttribute('data-placement', 'none');
-        myCards.appendChild(newCard);
+        document.getElementById('handCards').appendChild(newCard);
         cardDisplay.classList.add('hidden');
     });
 
     onTableButton.addEventListener('click', function() {
         var newCard = document.createElement('img');
         newCard.src = cardImage.src;
-        newCard.alt = 'myCards Card';
+        newCard.alt = 'Table Card';
         newCard.setAttribute('data-placement', 'none');
-        table.appendChild(newCard);
+        document.getElementById('tableCards').appendChild(newCard);
         cardDisplay.classList.add('hidden');
     });
 
@@ -295,4 +294,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
