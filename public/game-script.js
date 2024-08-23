@@ -6,28 +6,31 @@ document.addEventListener('DOMContentLoaded', function() {
     var userList = document.getElementById('userList');
     var socket = io();
 
-    if (!localStorage.getItem('username') || !localStorage.getItem('roomNumber')) {
+    if (!localStorage.getItem('currentUser')) {
         window.location.href = 'index.html';
     } else {
         game.classList.remove('hidden');
     }
 
-    var roomId = localStorage.getItem('roomNumber');
-    var username = JSON.parse(localStorage.getItem('currentUser')).username;
+    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    var roomId = currentUser.roomNumber;
+    var username = currentUser.username;
 
     socket.on('connect', () => {
         userIdDisplay.textContent = socket.id;
         roomNumberDisplay.textContent = roomId;
-        socket.emit('joinRoom', roomId);
+        console.log('Connected to server');
+        socket.emit('joinRoom', { room: roomId, username: username });
     });
 
     socket.on('updateUserList', (users) => {
         userList.innerHTML = ''; // Очищаем текущий список
-        users.forEach((userId) => {
+        users.forEach((user) => {
             var userElement = document.createElement('div');
-            userElement.textContent = userId; // Вы можете заменить userId на более информативный идентификатор
+            userElement.textContent = user.username;
             userList.appendChild(userElement);
         });
+        console.log('User list updated:', users);
     });
 
     var chatForm = document.getElementById('chatForm');
@@ -38,14 +41,17 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         var message = messageInput.value;
         if (message) {
-            socket.emit('chatMessage', { room: roomId, message: message });
+            console.log('Sending message:', message);
+            socket.emit('chatMessage', { room: roomId, message: message, username: username });
+            console.log('Message sent to server');
             messageInput.value = '';
         }
     });
 
     socket.on('chatMessage', function(data) {
+        console.log('Received message:', data);
         var messageElement = document.createElement('div');
-        messageElement.textContent = `${data.id}: ${data.message}`;
+        messageElement.textContent = `${data.username}: ${data.message}`;
         messages.appendChild(messageElement);
         messages.scrollTop = messages.scrollHeight;
     });
@@ -265,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var newCard = document.createElement('img');
         newCard.src = cardImage.src;
         newCard.alt = 'Hand Card';
-        newCard.setAttribute('data-placement', 'none');
+        newCard.setAttribute('data-placement', 'hand');
         document.getElementById('handCards').appendChild(newCard);
         cardDisplay.classList.add('hidden');
     });
@@ -274,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var newCard = document.createElement('img');
         newCard.src = cardImage.src;
         newCard.alt = 'Table Card';
-        newCard.setAttribute('data-placement', 'none');
+        newCard.setAttribute('data-placement', 'table');
         document.getElementById('tableCards').appendChild(newCard);
         cardDisplay.classList.add('hidden');
     });
@@ -286,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Initialize SortableJS for each container
-    ['table', 'myCards', 'hand', 'selectedCards'].forEach(function(id) {
+    ['table', 'hand', 'selectedCards'].forEach(function(id) {
         new Sortable(document.getElementById(id), {
             group: 'shared',
             animation: 150,

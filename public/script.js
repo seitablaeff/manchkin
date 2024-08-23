@@ -21,5 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Redirect to game page
         window.location.href = 'game.html';
+
+        // Соединение с сервером
+        var socket = io();
+        socket.emit('join room', { username: username, roomNumber: roomNumber });
     });
 });
